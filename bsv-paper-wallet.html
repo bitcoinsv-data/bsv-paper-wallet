@@ -33134,6 +33134,7 @@ body.sp-ready::before { content:none !important; }
 #sp-seed-grid { padding:24px 24px 12px; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; }
 @media (max-width:640px){
   .sp-st { gap:14px; }
+  #sp-seedcount { font-size:12px; letter-spacing:1.2px; }
   #sp-seed-grid { grid-template-columns:repeat(2,minmax(0,1fr)); padding:16px 14px 8px; gap:8px 10px; }
   .sp-w { gap:7px; }
   .sp-w b { font-size:15px; }
@@ -33222,7 +33223,7 @@ body.sp-ready::before { content:none !important; }
 .sp-tamount { text-align:left; }
 .sp-tamount div:first-child { font:700 10px var(--mono); letter-spacing:1.2px; color:var(--slate5); }
 .sp-tamount .sp-line2x { border-bottom:1px solid var(--slate4); height:16px; }
-@media (max-width:700px){ .sp-tmid { display:none; } }
+#sp-sheet { transform-origin:top left; }
 
 .sp-guide { border:2px solid var(--ink); display:flex; page-break-inside:avoid; }
 .sp-guidebody { flex:1; padding:16px 20px; display:grid; grid-template-columns:1fr 1fr; gap:12px 32px; }
@@ -33240,7 +33241,8 @@ body.sp-ready::before { content:none !important; }
   body.simple-printing #advanced-wrap { display:none !important; }
   body.simple-printing { background:#fff; }
   body.simple-printing #sp-sheetwrap { margin:0; }
-  #sp-sheet { box-shadow:none; padding:0; border:none; }
+  #sp-sheet { box-shadow:none; padding:0; border:none; transform:none !important; width:auto !important; }
+  #sp-sheetwrap { height:auto !important; overflow:visible !important; }
   .sp-tban.g { background:var(--green) !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
   .sp-tban.o { background:var(--rose) !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
   .sp-tban.k { background:var(--ink) !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
@@ -33349,7 +33351,7 @@ body.sp-ready::before { content:none !important; }
             </div>
             <div class="sp-secretbox">
               <div class="sp-secrethead">
-                <span id="sp-seedcount">SECRET &middot; 24 WORDS</span>
+                <span id="sp-seedcount">SECRET &middot; 24&nbsp;WORDS</span>
                 <button type="button" id="sp-seed-btn">Reveal seed phrase</button>
               </div>
               <div id="sp-seed-hiddenmsg">Hidden. Reveal them when you are alone and no camera is
@@ -33555,6 +33557,27 @@ body.sp-ready::before { content:none !important; }
     document.getElementById("sp-seed-btn").textContent = "Reveal seed phrase";
   }
 
+  // The sheet is a fixed print layout: on narrow screens, show it scaled down
+  // like a print preview instead of letting the tickets collapse.
+  function fitSheet(){
+    var wrap = document.getElementById("sp-sheetwrap");
+    var sheet = document.getElementById("sp-sheet");
+    if (wrap.style.display !== "block") return;
+    var full = 720;
+    var avail = wrap.clientWidth;
+    if (avail >= full) {
+      sheet.style.width = ""; sheet.style.transform = "";
+      wrap.style.height = ""; wrap.style.overflow = "";
+      return;
+    }
+    sheet.style.width = full + "px";
+    var s = avail / full;
+    sheet.style.transform = "scale(" + s + ")";
+    var head = sheet.getBoundingClientRect().top - wrap.getBoundingClientRect().top;
+    wrap.style.height = Math.ceil(head + sheet.offsetHeight * s) + "px";
+    wrap.style.overflow = "hidden";
+  }
+
   function render(phrase, rows){
     document.getElementById("sp-genbox").style.display = "none";
     var grid = document.getElementById("sp-seed-grid");
@@ -33570,7 +33593,7 @@ body.sp-ready::before { content:none !important; }
     }
     var acct = rows[0].path.replace(/\/0\/\d+$/, "");
     document.getElementById("sp-path-inline").textContent = "BSV · BIP39 · " + acct;
-    document.getElementById("sp-seedcount").textContent = "SECRET · " + words.length + " WORDS";
+    document.getElementById("sp-seedcount").textContent = "SECRET · " + words.length + " WORDS";
     document.getElementById("sp-gate-title").textContent =
       "I have written all " + words.length + " words on paper and checked them twice";
 
@@ -33633,6 +33656,7 @@ body.sp-ready::before { content:none !important; }
     document.getElementById("sp-dirty").style.display = "none";
     document.getElementById("sp-steps").style.display = "block";
     document.getElementById("sp-sheetwrap").style.display = "block";
+    fitSheet();
     document.getElementById("sp-generate").textContent = "Generate again";
     document.getElementById("sp-regen-note").style.display = "block";
     setStatus("Done: " + rows.length + " paper wallet" + (rows.length > 1 ? "s" : "") +
@@ -33880,6 +33904,8 @@ body.sp-ready::before { content:none !important; }
     window.addEventListener("offline", updateNet);
     window.addEventListener("resize", updateNet);
     window.addEventListener("orientationchange", updateNet);
+    window.addEventListener("resize", fitSheet);
+    window.addEventListener("orientationchange", fitSheet);
     updateNet();
     updateSummary();
 
