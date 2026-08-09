@@ -96,6 +96,7 @@ body.sp-ready::before { content:none !important; }
   box-shadow:0 2px 8px rgba(239,68,68,.3); }
 #sp-net-banner div:last-child { font:400 14px/1.55 var(--sans); color:var(--redtxt); }
 .sp-body { padding:32px; }
+@media (max-width:640px){ .sp-body { padding:24px 16px; } }
 .sp-hero { font:700 30px/1.2 var(--sans); letter-spacing:-.5px; color:var(--ink); max-width:620px; }
 .sp-herosub { font:400 16px/1.6 var(--sans); color:var(--slate6); max-width:660px; margin-top:12px; }
 .sp-btcwarn { font-weight:600; color:var(--reddark); }
@@ -211,15 +212,22 @@ body.sp-ready::before { content:none !important; }
   font:600 13px var(--sans); letter-spacing:.4px; padding:10px 16px; cursor:pointer; }
 #sp-seed-btn:hover { background:var(--line2); border-color:var(--slate4); }
 #sp-seed-hiddenmsg { padding:48px 20px; text-align:center; font:400 15px/1.6 var(--sans); color:var(--slate5); }
-#sp-seed-grid { padding:24px 24px 12px; display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
-@media (max-width:640px){ #sp-seed-grid { grid-template-columns:repeat(2,1fr); } }
-.sp-w { display:flex; align-items:baseline; gap:10px; border-bottom:1px dashed var(--line); padding:8px 4px; }
-.sp-w i { font:400 12px var(--mono); font-style:normal; color:var(--slate4); width:20px; text-align:right; }
-.sp-w b { font:600 16px var(--mono); color:var(--ink); }
+#sp-seed-grid { padding:24px 24px 12px; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; }
+@media (max-width:640px){
+  .sp-st { gap:14px; }
+  #sp-seed-grid { grid-template-columns:repeat(2,minmax(0,1fr)); padding:16px 14px 8px; gap:8px 10px; }
+  .sp-w { gap:7px; }
+  .sp-w b { font-size:15px; }
+  .sp-alsoline { margin:8px 14px 0; }
+  .sp-alsoline b { font-size:14px; }
+}
+.sp-w { display:flex; align-items:baseline; gap:10px; border-bottom:1px dashed var(--line); padding:8px 4px; min-width:0; }
+.sp-w i { font:400 13px var(--mono); font-style:normal; color:var(--slate7); width:20px; text-align:right; flex:0 0 20px; }
+.sp-w b { font:600 16px var(--mono); color:var(--ink); overflow-wrap:anywhere; }
 .sp-alsoline { padding:4px 24px 20px; display:flex; gap:12px; align-items:baseline; flex-wrap:wrap;
   border-top:1px dashed var(--line); margin:8px 24px 0; padding-left:0; padding-right:0; }
-.sp-alsoline span { font:600 11px var(--mono); letter-spacing:1.4px; color:var(--slate5); }
-.sp-alsoline b { font:600 16px var(--mono); color:var(--ink); }
+.sp-alsoline span { font:600 13px var(--mono); letter-spacing:1.4px; color:var(--slate6); }
+.sp-alsoline b { font:600 16px var(--mono); color:var(--ink); overflow-wrap:anywhere; }
 
 #sp-gate { margin-top:20px; width:100%; max-width:620px; display:flex; align-items:center; gap:16px;
   background:var(--page); border:2px solid var(--line); border-radius:12px; padding:18px 20px;
