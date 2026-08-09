@@ -992,8 +992,8 @@ preboot = (
     '<style id="sp-preboot">'
     'body>*{display:none !important}'
     'body>noscript{display:block !important}'
-    'body::before{content:"Loading BSV Paper Wallet\2026";position:fixed;top:38%;left:0;right:0;'
-    'text-align:center;font:16px sans-serif;color:#555}'
+    'body::before{content:"Loading BSV Paper Wallet\\2026";position:fixed;top:38%;left:0;right:0;'
+    'text-align:center;font:16px sans-serif;color:#444}'
     # if the script runs but never finishes booting, say something instead of spinning forever
     'body.sp-stalled::before{content:"This is taking too long. Open the file directly in Chrome, '
     'Firefox, Safari or Edge: some viewer apps block scripts.";padding:0 24px;line-height:1.5;color:#8a5a00}'
